@@ -11,6 +11,7 @@ import org.springframework.statemachine.config.builders.StateMachineStateConfigu
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
 import org.springframework.statemachine.listener.StateMachineListener;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
+import org.springframework.statemachine.state.EnumState;
 import org.springframework.statemachine.state.State;
 
 import java.util.EnumSet;
@@ -48,6 +49,7 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
                 .end(States.END);
     }
 
+    // transition config
     public void configure(StateMachineTransitionConfigurer<States, Events> config) throws Exception {
         config.withExternal()
                 .source(States.START)
@@ -66,12 +68,15 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
 
     }
 
-
+    // listener
     private StateMachineListener<States, Events> demoListener() {
         return new StateMachineListenerAdapter<>() {
             @Override
             public void stateChanged(State<States, Events> fromState, State<States, Events> toState) {
-                log.info("state changed to {}", toState.getId());
+                if(fromState == null){
+                    fromState = new EnumState<>(States.START);
+                }
+                log.info("state changed from {} to {}", fromState.getId(), toState.getId());
             }
         };
     }

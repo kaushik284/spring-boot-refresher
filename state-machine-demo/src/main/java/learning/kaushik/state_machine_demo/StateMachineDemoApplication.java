@@ -1,7 +1,9 @@
 package learning.kaushik.state_machine_demo;
 
+import learning.kaushik.state_machine_demo.configs.GameGenreProperties;
 import learning.kaushik.state_machine_demo.enums.Events;
 import learning.kaushik.state_machine_demo.enums.States;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -11,10 +13,14 @@ import org.springframework.statemachine.StateMachine;
 import reactor.core.publisher.Mono;
 
 @SpringBootApplication
+@Slf4j
 public class StateMachineDemoApplication implements CommandLineRunner {
 
 	@Autowired
 	private StateMachine<States, Events> stateMachine;
+
+	@Autowired
+	private GameGenreProperties gameGenreProperties;
 
 	public static void main(String[] args) {
 		SpringApplication.run(StateMachineDemoApplication.class, args);
@@ -26,5 +32,7 @@ public class StateMachineDemoApplication implements CommandLineRunner {
 		stateMachine.sendEvent(Mono.just(MessageBuilder.withPayload(Events.EVENT_1).build())).blockLast();
 		stateMachine.sendEvent(Mono.just(MessageBuilder.withPayload(Events.EVENT_2).build())).blockLast();
 		stateMachine.sendEvent(Mono.just(MessageBuilder.withPayload(Events.LAST).build())).blockLast();
+
+		gameGenreProperties.getNames().forEach((key, value) -> log.info("key: {}, value: {}", key, value));
 	}
 }
