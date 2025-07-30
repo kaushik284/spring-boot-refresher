@@ -47,6 +47,18 @@
 			<artifactId>spring-statemachine-core</artifactId>
 			<version>4.0.1</version>
 		</dependency>
+
+		<!-- resiliency -->
+		<dependency>
+			<groupId>io.github.resilience4j</groupId>
+			<artifactId>resilience4j-spring-boot3</artifactId>
+			<version>2.3.0</version>
+		</dependency>
+		<!--	starter aop is required for resilience4j retry to work	-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>

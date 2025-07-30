@@ -3,6 +3,7 @@ package learning.kaushik.state_machine_demo;
 import learning.kaushik.state_machine_demo.configs.GameGenreProperties;
 import learning.kaushik.state_machine_demo.enums.Events;
 import learning.kaushik.state_machine_demo.enums.States;
+import learning.kaushik.state_machine_demo.service.RetryDemoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -22,6 +23,9 @@ public class StateMachineDemoApplication implements CommandLineRunner {
 	@Autowired
 	private GameGenreProperties gameGenreProperties;
 
+	@Autowired
+	private RetryDemoService retryDemoService;
+
 	public static void main(String[] args) {
 		SpringApplication.run(StateMachineDemoApplication.class, args);
 	}
@@ -34,5 +38,12 @@ public class StateMachineDemoApplication implements CommandLineRunner {
 		stateMachine.sendEvent(Mono.just(MessageBuilder.withPayload(Events.LAST).build())).blockLast();
 
 		gameGenreProperties.getNames().forEach((key, value) -> log.info("key: {}, value: {}", key, value));
+		// testing retry
+		try {
+			retryDemoService.retryDemoMethod("exception");
+		} catch (Exception e){
+			log.error("caught after fallback");
+		}
+
 	}
 }
