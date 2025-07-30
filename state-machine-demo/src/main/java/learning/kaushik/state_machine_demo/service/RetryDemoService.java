@@ -27,7 +27,8 @@ public class RetryDemoService {
         return "success";
     }
 
-    public String fallbackRetryDemoMethod(String message, Throwable t) {
+    // signature does not require the message parameter, only the throwable or specific exception
+    public String fallbackRetryDemoMethod(RuntimeException t) {
         log.error("fallback method called because: {}", t.getMessage(), t);
         throw new RuntimeException(t.getMessage(), t);
     }
